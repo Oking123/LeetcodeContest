@@ -5,39 +5,18 @@ class ListNode:
 
 class Solution:
     def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode:
-        if l1 is None or l2 is None:
-            if l1 is None and l2 is None:
-                return None
-            elif l1 is None:
-                result = ListNode(l2.val)
-                l2 = l2.next
-            else:
-                result = ListNode(l1.val)
-                l1 = l1.next
-        else:
-            if l1.val >= l2.val:
-                result = ListNode(l2.val)
-                l2 = l2.next
-            else:
-                result = ListNode(l1.val)
-                l1 = l1.next
-        ans = result
-        while l1 is not None and l2 is not None:
-            if l1.val <= l2.val:
-                result.next = ListNode(l1.val)
-                l1, result = l1.next, result.next
-            else:
-                result.next = ListNode(l2.val)
-                l2, result = l2.next, result.next
         if l1 is None:
-            while l2 is not None:
-                result.next = ListNode(l2.val)
-                l2, result = l2.next, result.next
+            return l2
+        if l2 is None:
+            return l1
+        if l1.val <= l2.val:
+            l1.next = self.mergeTwoLists(l1.next, l2)
+            return l1
         else:
-            while l1 is not None:
-                result.next = ListNode(l1.val)
-                l1, result = l1.next, result.next
-        return ans
+            l2.next = self.mergeTwoLists(l2.next, l1)
+            return l2
+
+
 
 A = ListNode(1)
 A.next = ListNode(2)
@@ -46,7 +25,7 @@ B = ListNode(1)
 B.next = ListNode(1)
 B.next.next =ListNode(4)
 sl = Solution()
-ans = sl.mergeTwoLists(None,None)
+ans = sl.mergeTwoLists(A, B)
 while ans is not None:
     print(ans.val)
     ans = ans.next
